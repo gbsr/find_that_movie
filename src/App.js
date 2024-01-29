@@ -6,7 +6,7 @@ import MovieCard from './MovieCard';
 // API key for omdb: 8e16f5a1
 // delete this when production!
 
-const API_URL = 'http://www.omdbapi.com/?apikey=8e16f5a1';
+const API_URL = 'https://www.omdbapi.com/?apikey=8e16f5a1';
 
 const App = () => {
 	const [query, setQuery] = React.useState('Star Wars');
