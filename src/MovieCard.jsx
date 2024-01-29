@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./MovieCard.css";
 
 const apiKey = "8e16f5a1";
-const Movie = ({ movie }) => {
+const MovieCard = ({ movie }) => {
 	const [plot, setPlot] = useState("");
+	const handleOnPointerDown = () => {
+		// send them to the imdb link in a new browser window
+		window.open(`https://www.imdb.com/title/${movie.imdbID}/`, "_blank");
+	};
 
 	useEffect(() => {
 		fetch(`http://www.omdbapi.com/?i=${movie.imdbID}&plot=short&r=json&apiKey=${apiKey}`)
@@ -15,16 +19,18 @@ const Movie = ({ movie }) => {
 	}, [movie]);
 
 	return (
-		<div className="movie">
+		<div className="movie" onPointerDown={handleOnPointerDown}>
 			<div className="movie-card">
-				{movie?.Poster && movie.Poster !== "N/A" ? (
-					<img src={movie.Poster} alt={movie.Title} />
-				) : (
-					<p> No poster available at this time, sorry. </p>
-				)}
+				<div>
+					<h2>{movie.Title}</h2>
+				</div>
 			</div>
+			{movie?.Poster && movie.Poster !== "N/A" ? (
+				<img src={movie.Poster} alt={movie.Title} />
+			) : (
+				<p> No poster available at this time, sorry. </p>
+			)}
 			<div>
-				<h2>{movie.Title}</h2>
 				<p className="plot">{plot}</p>
 				<span>{movie.Type}</span>
 			</div>
@@ -32,4 +38,4 @@ const Movie = ({ movie }) => {
 	);
 };
 
-export default Movie;
+export default MovieCard;

@@ -12,8 +12,8 @@ body {
 
 h2 {
 	line-height: 2.75rem;
-	/* padding-top: 20px; */
 	padding-left: 20px;
+	color: rgb(219, 164, 105);
 }
 
 span {
@@ -23,13 +23,15 @@ span {
 .plot {
 	padding: 20px;
 	font-weight: 400;
-	font-size: 18px;
+	font-size: 22px;
+	line-height: 1.75rem;
 }
 
 .movie {
 	transform: scale(1);
 	transition: 150ms;
 	display: flex;
+	flex-direction: column;
 	max-width: 600px;
 	/* max-height: 380px; */
 	border-radius: 10px;
@@ -39,16 +41,16 @@ span {
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.376);
 }
 
-/* .movie:hover {
+.movie:hover {
 	transition: 150ms;
 	transform: scale(1.05);
-} */
+}
 
 img {
 	width: 100%px;
 	height: 100%px;
 	object-fit: cover;
-	border-radius: 10px;
+	border-radius: 20px;
 	margin: 0 auto;
 }
 
