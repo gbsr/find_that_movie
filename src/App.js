@@ -10,21 +10,27 @@ const App = () => {
 	const [results, setResults] = React.useState([]);
 	const [page, setPage] = useState(1);
 
-	const searchMovies = async (title, page) => {
+	const [error, setError] = useState(null);
+
+	const searchMovies = async (title, page,) => {
 		try {
 			const response = await fetch(`${API_URL}&s=${title}&page=${page}`);
 			const data = await response.json();
-			if (data.Search) {
+			if (data.Response === "True") {
 				setResults(data.Search);
+				setError(null); // Clear the error message when data is found
 			} else {
-				setResults([]); // Set results to an empty array if data.Search is undefined
-				console.error('Search property not found in API response:', data);
+				setResults([]); // Set results to an empty array if the movie isn't found
+				setError(data.Error); // Set the error message to data.Error
+				console.log(data.Error);
 			}
 		} catch (error) {
 			setResults([]); // Set results to an empty array if the API request fails
-			console.error('Error fetching movies:', error);
+			setError('Sorry, an error occurred. Please try again.');
 		}
 	};
+
+
 
 	const onSubmit = (e) => {
 		e.preventDefault();
@@ -47,10 +53,11 @@ const App = () => {
 					</form>
 				</div>
 				<div className="results">
-					{results.map((movie, index) => {
-
-						return <MovieCard key={`${movie.imdbID}-${index}`} movie={movie} />;
-					})}
+					{results.length > 0 ? (
+						results.map((movie) => <MovieCard key={movie.imdbID} movie={movie} />)
+					) : (
+						error && <div className="error"><p>{error}</p></div>
+					)}
 				</div>
 
 			</section>

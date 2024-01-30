@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./MovieCard.css";
 
 const apiKey = "8e16f5a1";
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, error }) => {
 	const [plot, setPlot] = useState("");
 	const handleOnPointerDown = () => {
 		// send them to the imdb link in a new browser window
@@ -23,6 +23,11 @@ const MovieCard = ({ movie }) => {
 			<div className="movie-card">
 				<div>
 					<h2>{movie.Title}</h2>
+					{error && (
+						<div className="error">
+							<p>{error}</p>
+						</div>
+					)}
 				</div>
 			</div>
 			{movie?.Poster && movie.Poster !== "N/A" ? (
