@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import './App.css';
 import MovieCard from './MovieCard';
 
@@ -34,8 +34,6 @@ const App = () => {
 		}
 	};
 
-
-
 	const onSubmit = (e) => {
 		e.preventDefault();
 		searchMovies(query, 1);
@@ -54,18 +52,42 @@ const App = () => {
 
 	}, [query, page]);
 
+	// floating scroll to top arrow
+	const [isFormVisible, setIsFormVisible] = useState(true);
+	const formRef = useRef(null);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(([entry]) => {
+			setIsFormVisible(entry.isIntersecting);
+		});
+
+		if (formRef.current) {
+			observer.observe(formRef.current);
+		}
+
+		return () => {
+			if (formRef.current) {
+				observer.unobserve(formRef.current);
+			}
+		};
+	}, []);
+
 	return (
 		<div className="app">
 			<section className="container">
 				<h1>Find that Movie</h1>
 				<div className="search">
 					<form onSubmit={onSubmit}>
-
 						<input
+							ref={formRef}
+							type="text"
 							placeholder="Search for a movie, IE: 'Star Wars, then press Enter'"
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
 						/>
+						<button className={`scroll-to-top ${!isFormVisible ? 'scroll-to-top-show' : ''}`} onClick={() => window.scrollTo(0, 0)}>
+							↑
+						</button>
 						<button type="submit">Find it!</button>
 					</form>
 				</div>

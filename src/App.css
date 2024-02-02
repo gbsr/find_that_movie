@@ -32,6 +32,24 @@ h1 {
 	flex-wrap: wrap;
 }
 
+.scroll-to-top {
+	transition: 0.3s;
+	position: fixed;
+	padding: 0.35rem;
+	bottom: 20px;
+	right: 20px;
+	opacity: 0;
+	visibility: hidden;
+	visibility: hidden;
+	opacity: 0;
+	/* Add any other styles you want for the button here */
+}
+
+.scroll-to-top-show {
+	opacity: 1;
+	visibility: visible;
+}
+
 form {
 	display: flex;
 	flex-direction: row;
