@@ -32,6 +32,13 @@ h1 {
 	flex-wrap: wrap;
 }
 
+.spacer {
+	width: 96vw;
+	height: 1px;
+	background: #333;
+	margin: 0 auto;
+}
+
 .scroll-to-top {
 	transition: 0.3s;
 	position: fixed;
@@ -48,6 +55,7 @@ h1 {
 .scroll-to-top-show {
 	opacity: 1;
 	visibility: visible;
+	z-index: 9999;
 }
 
 form {

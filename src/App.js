@@ -72,10 +72,46 @@ const App = () => {
 		};
 	}, []);
 
+	// custom scroll to top function, because I want more speed
+	function smoothScrollToTop(duration) {
+		const scrollHeight = window.scrollY;
+		const scrollStep = Math.PI / (duration / 15);
+		const cosParameter = scrollHeight / 2;
+		let scrollCount = 0;
+		let scrollMargin;
+		let scrollInterval = setInterval(function () {
+			if (window.scrollY != 0) {
+				scrollCount = scrollCount + 1;
+				scrollMargin = cosParameter - cosParameter * Math.cos(scrollCount * scrollStep);
+				window.scrollTo(0, (scrollHeight - scrollMargin));
+			}
+			else clearInterval(scrollInterval);
+		}, 15);
+	}
+
+	// add eventlistener for scroll to top arrow
+	useEffect(() => {
+		const scrollToTopButton = document.querySelector('.scroll-to-top');
+
+		const scrollFunction = () => smoothScrollToTop(1500);
+
+		if (scrollToTopButton) {
+			scrollToTopButton.addEventListener('click', scrollFunction);
+		}
+
+		// Cleanup function to remove the event listener
+		return () => {
+			if (scrollToTopButton) {
+				scrollToTopButton.removeEventListener('click', scrollFunction);
+			}
+		};
+	}, []);
+
 	return (
 		<div className="app">
 			<section className="container">
 				<h1>Find that Movie</h1>
+				<span>Clicking the card sends you to IMDB</span>
 				<div className="search">
 					<form onSubmit={onSubmit}>
 						<input
@@ -85,7 +121,7 @@ const App = () => {
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
 						/>
-						<button className={`scroll-to-top ${!isFormVisible ? 'scroll-to-top-show' : ''}`} onClick={() => window.scrollTo(0, 0)}>
+						<button className={`scroll-to-top ${!isFormVisible ? 'scroll-to-top-show' : ''}`} onClick={() => smoothScrollToTop(170)}>
 							↑
 						</button>
 						<button type="submit">Find it!</button>
@@ -94,9 +130,9 @@ const App = () => {
 				<div className="results">
 					{/* Add this line to display the total number of results */}
 					<p>Total results: {totalResults}</p>
-					{/* ... */}
+					<div className="spacer" />
 					{results.length > 0 ? (
-						results.map((movie) => <MovieCard key={movie.imdbID} movie={movie} />)
+						results.map((movie, index) => <MovieCard key={`${movie.imdbID}-${index}`} movie={movie} />)
 					) : (
 						error && <div className="error"><p>{error}</p></div>
 					)}

@@ -38,6 +38,7 @@ const MovieCard = ({ movie, error }) => {
 			<div>
 				<p className="plot">{plot}</p>
 				<span>{movie.Type}</span>
+				<span>{movie.Year}</span>
 			</div>
 		</div>
 	);
