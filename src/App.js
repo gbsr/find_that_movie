@@ -36,6 +36,8 @@ const App = () => {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
+		setResults([]);;
+		setPage(1);
 		searchMovies(query, 1);
 	};
 
@@ -47,10 +49,10 @@ const App = () => {
 		});
 	};
 
-	useEffect(() => {
-		searchMovies(query, page); // Fetch the first page of results
+	// useEffect(() => {
+	// 	searchMovies(query, 1); // Fetch the first page of results
 
-	}, [query, page]);
+	// }, [page]);
 
 	// floating scroll to top arrow
 	const [isFormVisible, setIsFormVisible] = useState(true);
@@ -128,8 +130,6 @@ const App = () => {
 					</form>
 				</div>
 				<div className="results">
-					{/* Add this line to display the total number of results */}
-					<p>Total results: {totalResults}</p>
 					<div className="spacer" />
 					{results.length > 0 ? (
 						results.map((movie, index) => <MovieCard key={`${movie.imdbID}-${index}`} movie={movie} />)
@@ -137,7 +137,7 @@ const App = () => {
 						error && <div className="error"><p>{error}</p></div>
 					)}
 				</div>
-				<button onClick={loadMore}>More..</button>
+				{results.length < totalResults && <button onClick={loadMore}>More..</button>}
 
 			</section>
 		</div>
