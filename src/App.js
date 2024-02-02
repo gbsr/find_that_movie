@@ -13,27 +13,25 @@ const App = () => {
 
 	const [error, setError] = useState(null);
 
-	const searchMovies = async (title, page,) => {
+	const searchMovies = async (title, page) => {
 		try {
 			const response = await fetch(`${API_URL}&s=${title}&page=${page}`);
 			const data = await response.json();
 			if (data.Response === "True") {
-				setResults(prevResults => [...prevResults, ...data.Search]); // Append new results to existing ones
+				setResults(prevResults => [...prevResults, ...data.Search]);
 				setTotalResults(data.totalResults);
-				setError(null); // Clear the error message when data is found
+				setError(null);
 			} else {
-				setResults([]); // Set results to an empty array if the movie isn't found
+				setResults([]);
 				setTotalResults(0);
-				setError(data.Error); // Set the error message to data.Error
-				console.log(data.Error);
+				setError(data.Error);
 			}
 		} catch (error) {
-			setResults([]); // Set results to an empty array if the API request fails
+			setResults([]);
 			setTotalResults(0);
-			setError('Sorry, an error occurred. Please try again.');
+			setError('Network error. Please try again.');
 		}
 	};
-
 	const onSubmit = (e) => {
 		e.preventDefault();
 		setResults([]);;
@@ -75,7 +73,10 @@ const App = () => {
 	}, []);
 
 	// custom scroll to top function, because I want more speed
-	function smoothScrollToTop(duration) {
+	function smoothScrollToTop(duration, event) {
+		// Prevent the form submission event from refreshing the page
+		if (event) event.preventDefault();
+
 		const scrollHeight = window.scrollY;
 		const scrollStep = Math.PI / (duration / 15);
 		const cosParameter = scrollHeight / 2;
@@ -95,7 +96,7 @@ const App = () => {
 	useEffect(() => {
 		const scrollToTopButton = document.querySelector('.scroll-to-top');
 
-		const scrollFunction = () => smoothScrollToTop(1500);
+		const scrollFunction = (event) => smoothScrollToTop(1500, event);
 
 		if (scrollToTopButton) {
 			scrollToTopButton.addEventListener('click', scrollFunction);
@@ -123,7 +124,7 @@ const App = () => {
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
 						/>
-						<button className={`scroll-to-top ${!isFormVisible ? 'scroll-to-top-show' : ''}`} onClick={() => smoothScrollToTop(170)}>
+						<button type="button" className={`scroll-to-top ${!isFormVisible ? 'scroll-to-top-show' : ''}`} onClick={() => smoothScrollToTop(170)}>
 							↑
 						</button>
 						<button type="submit">Find it!</button>
@@ -138,6 +139,7 @@ const App = () => {
 					)}
 				</div>
 				{results.length < totalResults && <button onClick={loadMore}>More..</button>}
+				{error && <p>{error}</p>}
 
 			</section>
 		</div>
