@@ -30,6 +30,7 @@ const MovieCard = ({ movie, error }) => {
 					)}
 				</div>
 			</div>
+
 			{movie?.Poster && movie.Poster !== "N/A" ? (
 				<img src={movie.Poster} alt={movie.Title} />
 			) : (

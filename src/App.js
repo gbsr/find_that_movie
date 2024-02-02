@@ -91,7 +91,6 @@ const App = () => {
 			else clearInterval(scrollInterval);
 		}, 15);
 	}
-
 	// add eventlistener for scroll to top arrow
 	useEffect(() => {
 		const scrollToTopButton = document.querySelector('.scroll-to-top');
